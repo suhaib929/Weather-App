@@ -33,7 +33,7 @@ Notifications	Alerts users about severe weather (storms, snow, heavy rain).
 *Installation*
 
 --Clone the Project:
-git clone https://github.com/YOUR_USERNAME/weather_mobile_app.git
+git clone https://(https://github.com/suhaib929/Weather-App.git)
 cd weather_mobile_app
 --Install Dependencies
 --Configure API Key:
