@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Weather Mobile App
 lightweight mobile application built with Flutter that provides users with real-time weather data, hourly predictions, and multi-day forecasts for selected cities. The project emphasizes clean architecture, maintainable code, and modern UI/UX design.
 
@@ -73,3 +74,7 @@ lib/
 Provider: WeatherAPI.com
 Base URL: https://api.weatherapi.com/v1/
 
+=======
+# Weather-App
+Weather App project using Flutter according to instructions provided by Dr. Mohammed Jabari.
+>>>>>>> 404742a0d5903ab7ca1634f36f48d4afa39d4b7c
