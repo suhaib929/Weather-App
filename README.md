@@ -38,43 +38,39 @@ cd weather_mobile_app
 --Install Dependencies
 --Configure API Key:
 
-*Project Structure*
-lib/
- ├── main.dart
- ├── screens/
- │    ├── home_screen.dart
- │    ├── places_screen.dart
- │    ├── forecast_screen.dart
- │    └── hourly_screen.dart
- │
- ├── widgets/
- │    ├── weather_card.dart
- │    ├── temperature_widget.dart
- │    └── city_tile.dart
- │
- ├── api/
- │    ├── weather_api.dart
- │    ├── api_endpoints.dart
- │    ├── api_config.dart
- │    └── api_exceptions.dart
- │
- ├── classes/
- │    ├── weather_provider.dart   
- │    ├── date_formatter.dart
- │    ├── temperature_converter.dart
- │    └── location_helper.dart
- │
- └── models/
-      ├── current_weather_model.dart
-      ├── forecast_model.dart
-      └── hourly_model.dart
-
 *API Details*
 
 Provider: WeatherAPI.com
 Base URL: https://api.weatherapi.com/v1/
 
 =======
+weather_app/                 <- Root folder of the Flutter project
+│
+├─ lib/                      <- Main Dart source files
+│  ├─ main.dart              <- App entry point, runs WeatherApp
+│  │
+│  ├─ screens/               <- Screens (pages) of the app
+│  │  ├─ home_screen.dart    <- Main screen, search city and show current weather
+│  │  ├─ forecast_screen.dart <- 3-day forecast screen
+│  │  ├─ daily_forecast_screen.dart <- Daily forecast for multiple days
+│  │  ├─ ourly_forecast_screen.dart <- Hourly forecast screen (typo, should be hourly_forecast_screen.dart)
+│  │  ├─ cities_screen.dart  <- List of predefined cities with weather info
+│  │
+│  ├─ widgets/               <- Reusable UI components
+│  │  ├─ app_drawer.dart     <- Navigation drawer for the app
+│  │  ├─ weather_card.dart   <- Custom card to show city weather
+│  │
+│  ├─ services/              <- API services
+│  │  ├─ weather_service.dart <- Fetch current weather & forecast from API
+│  │
+│  ├─ classes/               <- Data models
+│  │  ├─ weather_models.dart <- Defines CurrentWeather, DailyForecast models
+│
+├─ pubspec.yaml              <- Flutter project configuration (dependencies, assets)
+├─ android/                  <- Android native project files
+├─ ios/                      <- iOS native project files
+└─ assets/                   <- Images, icons, or other static assets
+
 # Weather-App
 Weather App project using Flutter according to instructions provided by Dr. Mohammed Jabari.
 >>>>>>> 404742a0d5903ab7ca1634f36f48d4afa39d4b7c
