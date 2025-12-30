@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/weather_provider.dart';
+import 'screens/startup_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/hourly_forecast_screen.dart';
+import 'screens/daily_forecast_screen.dart';
+import 'screens/cities_screen.dart';
+import 'screens/places_screen.dart';
 
 void main() {
-  runApp(WeatherApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => WeatherProvider(),
+      child: const WeatherApp(),
+    ),
+  );
 }
 
 class WeatherApp extends StatelessWidget {
@@ -11,13 +24,18 @@ class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Weather App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: HomeScreen(),
+      title: 'Weather App',
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const StartupScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/cities': (context) => const CitiesScreen(),
+        '/places': (context) => const PlacesScreen(),
+        '/hourly': (context) => const HourlyForecastScreen(),
+        '/daily': (context) => const DailyForecastScreen(),
+      },
     );
   }
 }

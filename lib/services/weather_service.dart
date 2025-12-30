@@ -1,52 +1,74 @@
+import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
+import '../models/current_weather.dart';
+import '../models/daily_forecast.dart';
+import '../models/hourly_forecast.dart';
+import '../utils/constants.dart';
+
 class WeatherService {
-  // Your Weather API Key
-  static const String _apiKey = "45844ebdc10e4eeebc291037250612";
+  static const Duration _timeout = Duration(seconds: 10);
 
-  // The base URL of the Weather API
-  static const String _baseUrl = "http://api.weatherapi.com/v1";
+  static Uri _buildUri(
+    String endpoint,
+    Map<String, String> params,
+  ) {
+    return Uri.parse('${ApiConstants.baseUrl}/$endpoint').replace(
+      queryParameters: {
+        ...params,
+        'key': ApiConstants.weatherApiKey,
+      },
+    );
+  }
 
-  
-  ///  A general method for sending API requests
-  /// This method is flexible and used by all other methods below.
-  /// It handles:
-  /// - creating the URL
-  /// - sending the HTTP request
-  /// - decoding the JSON response
-  /// - catching any errors
-  
-  static Future<Map<String, dynamic>?> _getData(String endpoint) async {
-    try {
-      final url = Uri.parse("$_baseUrl/$endpoint&key=$_apiKey");
-      final response = await http.get(url);
+  static Future<Map<String, dynamic>> _get(
+    String endpoint,
+    Map<String, String> params,
+  ) async {
+    final response =
+        await http.get(_buildUri(endpoint, params)).timeout(_timeout);
 
-      // If the request was successful
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        print("⚠ API Error: ${response.statusCode}");
-        return null;
-      }
-
-    } catch (e) {
-      // This happens when the internet is off or API is unreachable
-      print("⚠ Connection Error: $e");
-      return null;
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load weather data');
     }
+
+    return json.decode(response.body);
   }
 
-   
-  static Future<Map<String, dynamic>?> fetchCurrent(String city) async {
-    final endpoint = "current.json?q=$city&aqi=no";
-    return await _getData(endpoint);
+  // ---------------- CURRENT WEATHER ----------------
+
+  static Future<CurrentWeather> getCurrentWeather(String city) async {
+    final data = await _get('current.json', {'q': city});
+    return CurrentWeather.fromJson(data);
   }
 
-  static Future<Map<String, dynamic>?> fetchForecast(
-      String city, {int days = 3}) async {
-    final endpoint =
-        "forecast.json?q=$city&days=$days&aqi=no&alerts=no";
-    return await _getData(endpoint);
+  static Future<CurrentWeather> getCurrentByCoords(
+    double lat,
+    double lon,
+  ) async {
+    final data = await _get('current.json', {'q': '$lat,$lon'});
+    return CurrentWeather.fromJson(data);
+  }
+
+  // ---------------- FORECAST ----------------
+
+  static Future<List<DailyForecast>> get3DayForecast(String city) async {
+    final data =
+        await _get('forecast.json', {'q': city, 'days': '3'});
+
+    return (data['forecast']['forecastday'] as List)
+        .map((e) => DailyForecast.fromJson(e))
+        .toList();
+  }
+
+  static Future<List<HourlyForecast>> getHourlyForecast(String city) async {
+    final data =
+        await _get('forecast.json', {'q': city, 'days': '1'});
+
+    return (data['forecast']['forecastday'][0]['hour'] as List)
+        .map((e) => HourlyForecast.fromJson(e))
+        .toList();
   }
 }

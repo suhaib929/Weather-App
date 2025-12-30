@@ -1,44 +1,60 @@
+// weather_card.dart
 import 'package:flutter/material.dart';
+import '../models/current_weather.dart';
 
 class WeatherCard extends StatelessWidget {
-  final String city;
-  final String temp;
-  final String condition;
-  final String iconUrl;
-  final VoidCallback? onMore;
-
-  const WeatherCard({
-    Key? key,
-    required this.city,
-    required this.temp,
-    required this.condition,
-    required this.iconUrl,
-    this.onMore,
-  }) : super(key: key);
+  final CurrentWeather weather;
+  const WeatherCard({super.key, required this.weather});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
-      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        leading: iconUrl.isNotEmpty
-            ? Image.network(iconUrl, width: 36)
-            : Icon(Icons.wb_sunny, size: 36, color: Colors.amber[700]),
-        title: Text(city, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-        subtitle: Text(condition),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      elevation: 8,
+      margin: const EdgeInsets.all(20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: const LinearGradient(
+            colors: [Color(0xff64B5F6), Color(0xff1976D2)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(temp, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 6),
-            ElevatedButton(
-              onPressed: onMore,
-              child: Text('More', style: TextStyle(fontSize: 12)),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            Text(
+              weather.city,
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Image.network(
+              weather.iconUrl,
+              width: 90,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "${weather.temperature}°C",
+              style: const TextStyle(
+                fontSize: 42,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              weather.condition,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.white70,
               ),
             ),
           ],
